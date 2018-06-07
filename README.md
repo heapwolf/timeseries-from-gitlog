@@ -33,3 +33,15 @@ This is pretty easy to parse, and we end up with something like this...
     subject: 'first',
     impact: { files: 1, insertions: 3, deletions: 0 } } ]
 ```
+
+# USAGE
+
+```js
+const ts = require('timeseries-from-gitlog')
+
+const data = ts({
+  cwd, // optional: current working directory to execute git in
+  limit // optional: limit the number of logs that are parsed
+})
+
+console.log(data)
