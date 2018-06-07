@@ -1,0 +1,11 @@
+{
+  "name": "timeseries-from-gitlog",
+  "version": "1.0.0",
+  "description": "Represent the git log as time-series data (JSON).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
