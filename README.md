@@ -35,13 +35,19 @@ This is pretty easy to parse, and we end up with something like this...
 ```
 
 # USAGE
+All options are optional.
 
 ```js
 const ts = require('timeseries-from-gitlog')
 
 const data = ts({
-  cwd, // optional: current working directory to execute git in
-  limit // optional: limit the number of logs that are parsed
+  cwd: '', // current working directory to execute git in
+  limit: 1 // limit the number of logs that are parsed
+  skip // how many logs to skip when starting
+  mine: true, // only show commits from the current user
+  reverse: true, // start from the beginning
+  dateOnly: true // gets '2018-06-04' instead of '2018-06-04T19:13:48+02:00'
 })
 
 console.log(data)
+```

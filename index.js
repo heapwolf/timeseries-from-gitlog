@@ -28,32 +28,66 @@ const parseImpact = s => {
   }
 }
 
-const parseLines = a => {
+const parseLines = (a, dateOnly) => {
   return a.map(group => {
     const impact = parseImpact(group.pop())
 
-    return {
+    const data = {
       date: group.shift(),
       author: group.shift(),
       subject: group.join('\n'),
       impact
     }
+
+    if (dateOnly) data.date = data.date.split('T')[0]
+
+    return data
   })
 }
 
 const SEP = '#####'
 
-module.exports = (cwd, limit) => {
-  const args = [
+module.exports = (args = {}) => {
+  const {
+    cwd,
+    limit,
+    mine,
+    reverse,
+    skip,
+    dateOnly
+  } = args
+
+  const params = [
     'log',
     `--format=${SEP}%cI%n%ae%n%s`,
     '--shortstat',
     '--no-merges'
   ]
 
-  if (limit) args.push(`--max-count=${limit}`)
+  if (limit) {
+    params.push(`--max-count=${limit}`)
+  }
 
-  const { stdout, stderr } = spawn('git', args, { cwd })
+  if (reverse) {
+    params.push('--reverse')
+  }
+
+  if (mine) {
+    const params = ['config', '--get', 'user.name']
+    const { stdout, stderr } = spawn('git', params, { cwd })
+
+    if (stderr) {
+      throw new Error(stderr.toString())
+    }
+
+    params.push(`--author="${stdout.toString()}"`)
+  }
+
+  if (skip) {
+    params.push(`--skip=${skip}`)
+  }
+
+  const { stdout, stderr } = spawn('git', params, { cwd })
 
   if (stderr.length) {
     throw new Error(stderr.toString())
@@ -65,5 +99,5 @@ module.exports = (cwd, limit) => {
     .filter(v => !!v) // remove blank lines
     .map(s => s.trim().split('\n'))
 
-  return parseLines(lines)
+  return parseLines(lines, dateOnly)
 }
