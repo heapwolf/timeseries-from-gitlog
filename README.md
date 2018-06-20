@@ -46,7 +46,8 @@ const data = ts({
   skip // how many logs to skip when starting
   mine: true, // only show commits from the current user
   reverse: true, // start from the beginning
-  dateOnly: true // gets '2018-06-04' instead of '2018-06-04T19:13:48+02:00'
+  dateOnly: true, // gets '2018-06-04' instead of '2018-06-04T19:13:48+02:00'
+  since: '1 year ago' // relative time, see git docs for more info
 })
 
 console.log(data)

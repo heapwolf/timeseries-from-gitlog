@@ -54,7 +54,8 @@ module.exports = (args = {}) => {
     mine,
     reverse,
     skip,
-    dateOnly
+    dateOnly,
+    since
   } = args
 
   const params = [
@@ -66,6 +67,10 @@ module.exports = (args = {}) => {
 
   if (limit) {
     params.push(`--max-count=${limit}`)
+  }
+
+  if (since) {
+    params.push(`--since="${since}"`)
   }
 
   if (reverse) {
