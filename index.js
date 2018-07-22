@@ -81,11 +81,11 @@ module.exports = (args = {}) => {
     const _params = ['config', '--get', 'user.name']
     const { stdout, stderr } = spawn('git', _params, { cwd })
 
-    if (stderr) {
+    if (stderr && stderr.toString().length) {
       throw new Error(stderr.toString())
     }
 
-    params.push(`--author="${stdout.toString().trim()}"`)
+    params.push(`--author=${stdout.toString().trim()}`)
   }
 
   if (skip) {
@@ -102,11 +102,7 @@ module.exports = (args = {}) => {
     .toString() // stringify the stdout
     .split(SEP) // split on new line
     .filter(v => !!v) // remove blank lines
+    .map(s => s.trim().split('\n'))
 
-  if (lines.length) {
-    lines = lines.map(s => s.trim().split('\n'))
-    return parseLines(lines, dateOnly)
-  }
-
-  return []
+  return parseLines(lines, dateOnly)
 }
