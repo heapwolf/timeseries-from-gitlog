@@ -78,14 +78,14 @@ module.exports = (args = {}) => {
   }
 
   if (mine) {
-    const params = ['config', '--get', 'user.name']
-    const { stdout, stderr } = spawn('git', params, { cwd })
+    const _params = ['config', '--get', 'user.name']
+    const { stdout, stderr } = spawn('git', _params, { cwd })
 
     if (stderr) {
       throw new Error(stderr.toString())
     }
 
-    params.push(`--author="${stdout.toString()}"`)
+    params.push(`--author="${stdout.toString().trim()}"`)
   }
 
   if (skip) {
@@ -98,11 +98,15 @@ module.exports = (args = {}) => {
     throw new Error(stderr.toString())
   }
 
-  const lines = stdout
+  let lines = stdout
     .toString() // stringify the stdout
     .split(SEP) // split on new line
     .filter(v => !!v) // remove blank lines
-    .map(s => s.trim().split('\n'))
 
-  return parseLines(lines, dateOnly)
+  if (lines.length) {
+    lines = lines.map(s => s.trim().split('\n'))
+    return parseLines(lines, dateOnly)
+  }
+
+  return []
 }

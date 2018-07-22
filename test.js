@@ -28,13 +28,13 @@ test('get log from this repo with limit parameter', t => {
 })
 
 test('get log from this repo with dateOnly parameter', t => {
-  const log = tfg({ dateOnly: true })
+  const log = tfg({ dateOnly: true, reverse: true })
   t.equal(log[0].date, '2018-06-07', 'the time was omitted from the date')
   t.end()
 })
 
 test('get log from this repo, skip 1', t => {
-  const log = tfg({ skip: 1 })
+  const log = tfg({ skip: 1, reverse: true })
   t.equal(log[0].date, '2018-06-07T17:46:09+02:00', 'the timestamp was correct')
   t.end()
 })
