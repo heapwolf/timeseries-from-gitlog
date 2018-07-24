@@ -101,7 +101,7 @@ module.exports = (args = {}) => {
   let lines = stdout
     .toString() // stringify the stdout
     .split(SEP) // split on new line
-    .filter(v => !!v) // remove blank lines
+    .filter(Boolean) // remove blank lines
     .map(s => s.trim().split('\n'))
 
   return parseLines(lines, dateOnly)
